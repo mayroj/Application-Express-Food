@@ -1,0 +1,72 @@
+1 /-- Affiche toutes les informations de la table client où le nom est égal à CARLE --/
+
+SELECT * FROM client WHERE nom='Carle';
+
+SELECT n.* FROM client AS n WHERE n.nom = 'Carle';
+
+2 /-- Affiche la table client et la table adresse de le client avec le nom Carle --/
+
+SELECT n.*, a.* FROM client AS n, adresse AS a
+WHERE n.client_id = a.client_id 
+AND n.nom = 'Carle';
+
+SELECT n.*, a.* FROM client AS n, adresse AS a
+WHERE n.client_id = a.client_id 
+AND n.nom = 'Citeaux';
+
+3 /-- Affiche la liste des commandes réalisées pour le client avec le nom Hardy --/
+
+SELECT n.*, a.* FROM client AS n, commande AS a
+WHERE n.client_id = a.client_id 
+AND n.nom = 'Hardy';
+
+4 /-- Affiche les informations souhaités entre trois tables client, adresse et commandes 
+réalisées à le client Carle --/
+
+SELECT n.client_id, n.nom, n.prenom, a.numero_voie, a.rue, a.code_postal, a.ville, b.*  
+FROM client AS n, adresse AS a, commande AS b
+WHERE n.client_id = a.client_id 
+AND n.client_id = b.client_id 
+AND n.nom = 'Carle';
+
+5 /-- Affiche toutes les informations de la table commandes, non geres par le livreur "Fuller Andrew" id 1 
+et creès entre 2018-07-13 et 2018-07-15 --/
+
+SELECT * 
+FROM public.commande
+WHERE(NOT livreur_id='1') 
+AND (date_commande>='2018-07-13' 
+AND date_livraison<='2018-07-15');
+
+6 /-- Affiche toutes les informations des commandes avec le id 4,9,11 --/
+
+SELECT * FROM commande 
+WHERE commande_id IN(4,9,11);
+
+7 /-- Affiche toutes les commandes moins les commandes avec les id 1,2,3,4,5,6 --/
+
+SELECT * FROM commande  
+WHERE commande_id NOT IN(1,2,3,4,5,6);
+
+8 /-- organise les attributs de la table client dans l'ordre croissant et qui le nom contiennent la lettre a --/
+
+SELECT * FROM client WHERE nom LIKE'%a%' ORDER BY nom ASC;
+
+9 /--Afficher la liste des commandes faites pour le client donc le nom est Trujillo--/
+
+SELECT * FROM commande 
+WHERE client_id IN(
+	SELECT client_id FROM client
+	WHERE client.nom='Trujillo'
+);
+
+10 /-- Afficher la liste des commandes realises par Carle en utilisant le INNER JOIN 
+affiche la columne commande_id comme 'codigo'--/
+
+SELECT commande.commande_id AS "Codigo", client.* FROM commande
+INNER JOIN client ON client.client_id=commande.client_id
+WHERE client.nom='Carle';
+
+
+
+ 
